@@ -5,6 +5,7 @@ export default {
     nuevo_usuario: async (req, res, next) => {
         try {
             //encriptamos el password 
+            console.log(req.body);
             req.body.password = await bcrypt.hash(req.body.password, 10);
 
             const registro = await models.Usuario.create(req.body);
@@ -124,7 +125,7 @@ export default {
                 let match=await bcrypt.compare(req.body.password,user.password);
                 if(match){
                    //Generar un token asociado a ese usuario con jwt
-                    let tokenGenerado=await Token.crearToken(user._id);
+                    let tokenGenerado=await Token.crearToken(user._id,user.rol,user.email);
                    res.status(200).json({user,tokenGenerado});
 
                 }else{

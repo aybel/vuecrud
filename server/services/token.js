@@ -14,15 +14,15 @@ async function revisarToken(token) {
     if (user) {
         const token = jwt.sign({ _id: _id }, 'FERGDSFSESDF', { expiresIn: '1d' });
         return { token, rol: user.rol }
-    }else{
+    } else {
         return false;
     }
 
 }
 
 export default {
-    crearToken: async (_id) => {
-        const token = jwt.sign({ _id: _id }, 'FERGDSFSESDF', { expiresIn: '1d' }); //durará un día
+    crearToken: async (_id, rol, email) => {
+        const token = jwt.sign({ _id: _id, rol: rol, email: email }, 'FERGDSFSESDF', { expiresIn: '1d' }); //durará un día
         return token;
     },
     decodificarToken: async (token) => {
@@ -36,7 +36,7 @@ export default {
             }
 
         } catch (error) {
-            const nuevoToken=await revisarToken(token);
+            const nuevoToken = await revisarToken(token);
             return nuevoToken;
         }
     }

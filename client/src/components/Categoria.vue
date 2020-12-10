@@ -53,6 +53,44 @@
             </v-card-actions>
           </v-card>
         </v-dialog>
+
+        <v-dialog v-model="adModal" max-width="290">
+          <v-card>
+            <v-card-title class="headline" v-if="adAccion == 1">
+              Activar item
+            </v-card-title>
+            <v-card-title class="headline" v-if="adAccion == 2">
+              Desactivar item
+            </v-card-title>
+
+            <v-card-text>
+              Estás a punto de <span v-if="adAccion == 1">activar</span>
+              <span v-if="adAccion == 2">desactivar</span> el item
+              {{ adNombre }}
+            </v-card-text>
+
+            <v-card-actions>
+              <v-spacer>
+                <v-btn @click="closeDialog()" color="orange darken-4"> Cancelar </v-btn>
+
+                <v-btn
+                  v-if="adAccion == 1"
+                  @click="activar()"
+                  color="green darken-1"
+                >
+                  Activar
+                </v-btn>
+                <v-btn
+                  v-if="adAccion == 2"
+                  @click="desactivar()"
+                  color="green darken-1"
+                >
+                  Desactivar
+                </v-btn>
+              </v-spacer>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
         <v-dialog v-model="dialogDelete" max-width="500px">
           <v-card>
             <v-card-title class="headline"
@@ -97,10 +135,10 @@
             <td class="text-xs-right">{{ props.item.nombre }}</td>
             <td class="text-xs-right">{{ props.item.descripcion }}</td>
             <td class="text-xs-center">
-              <div v-if="props.item.estado">
+              <div v-if="props.item.estado==1">
                 <span class="blue--text">Activo</span>
               </div>
-              <div v-else>
+              <div v-if="props.item.estado==0">
                 <span class="red--text">In activo</span>
               </div>
             </td>
@@ -138,6 +176,10 @@ export default {
       msj: "",
     },
     valida: 0,
+    adModal: 0,
+    adAccion: 0,
+    adNombre: "",
+    adId: 0,
   }),
 
   computed: {
@@ -266,13 +308,64 @@ export default {
     },
 
     changeEstado(accion, item) {
+      this.adModal = 1;
+      this.adNombre = item.nombre;
+      this.adId = item._id;
       if (accion == 1) {
-        console.log("activar");
+        this.adAccion = 1;
+      } else if (accion == 2) {
+        this.adAccion = 2;
       } else {
-        console.log("des activar");
+        this.adModal = 0;
       }
     },
-
+    activar() {
+      axios
+        .put("http://localhost:3000/api/categoria/activar", {
+          _id: this.adId,
+        })
+        .then((response) => {
+          this.adModal = 0;
+          this.adAccion = 0;
+          this.adNombre = "";
+          this.adId = "";
+          this.get_categorias();
+          let berror = 0;
+          const msj = "Categoría activada con éxito";
+          this.showAlert(berror, msj);
+        })
+        .catch((e) => {
+          let berror = 1;
+          const msj = "Error al activar la categoria";
+          this.showAlert(berror, msj);
+          console.log(e);
+        });
+    },
+    desactivar() {
+      axios
+        .put("http://localhost:3000/api/categoria/desactivar", {
+          _id: this.adId,
+        })
+        .then((response) => {
+          this.adModal = 0;
+          this.adAccion = 0;
+          this.adNombre = "";
+          this.adId = "";
+          this.get_categorias();
+          let berror = 0;
+          const msj = "Categoría activada con éxito";
+          this.showAlert(berror, msj);
+        })
+        .catch((e) => {
+          let berror = 1;
+          const msj = "Error al activar la categoria";
+          this.showAlert(berror, msj);
+          console.log(e);
+        });
+    },
+    closeDialog(){
+      this.adModal=0;
+    },
     deleteItemConfirm() {
       this.closeDelete();
     },

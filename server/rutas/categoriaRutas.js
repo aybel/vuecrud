@@ -9,8 +9,8 @@ router.post('/agregar',categoriaController.agregar);
 router.get('/consultar',auth.varficarAlmacen,categoriaController.consultar);
 router.get('/listar',categoriaController.listar);
 router.put('/actualizar',categoriaController.actualizar);
-router.put('/activar',auth.varficarAlmacen,categoriaController.activar);
-router.put('/desactivar',auth.varficarAlmacen,categoriaController.desactivar);
+router.put('/activar',categoriaController.activar);
+router.put('/desactivar',categoriaController.desactivar);
 router.delete('/borrar',auth.varficarAlmacen,categoriaController.borrar);
 
 export default router;

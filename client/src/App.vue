@@ -4,24 +4,25 @@
       v-model="drawer"
       :clipped="$vuetify.breakpoint.lgAndUp"
       app
+      v-if="islogeado"
     >
       <v-list dense>
-        <template>
-          <v-list-item :to="{ name: 'home' }">
+        <template v-if="isAdmin || isAlmacen || isVendedor">
+          <v-list-item :to="{ name: 'Home' }">
             <v-list-item-action>
               <v-icon>home</v-icon>
             </v-list-item-action>
             <v-list-item-title> Inicio </v-list-item-title>
           </v-list-item>
         </template>
-        <template>
+        <template v-if="isAdmin || isAlmacen">
           <v-list-group>
             <v-list-item slot="activator">
               <v-list-item-content>
                 <v-list-item-title> Almacén </v-list-item-title>
               </v-list-item-content>
             </v-list-item>
-            <v-list-item :to="{name:'categoria'}">
+            <v-list-item :to="{ name: 'categoria' }">
               <v-list-item-action>
                 <v-icon>table_chart</v-icon>
               </v-list-item-action>
@@ -29,7 +30,7 @@
                 <v-list-item-title> Categorias </v-list-item-title>
               </v-list-item-content>
             </v-list-item>
-            <v-list-item :to="{name:''}">
+            <v-list-item :to="{ name: '' }">
               <v-list-item-action>
                 <v-icon>table_chart</v-icon>
               </v-list-item-action>
@@ -40,14 +41,14 @@
           </v-list-group>
         </template>
 
-          <template>
+        <template v-if="isAdmin || isAlmacen">
           <v-list-group>
             <v-list-item slot="activator">
               <v-list-item-content>
                 <v-list-item-title> Compras </v-list-item-title>
               </v-list-item-content>
             </v-list-item>
-            <v-list-item :to="{name:''}">
+            <v-list-item :to="{ name: '' }">
               <v-list-item-action>
                 <v-icon>table_chart</v-icon>
               </v-list-item-action>
@@ -55,7 +56,7 @@
                 <v-list-item-title> Entradas </v-list-item-title>
               </v-list-item-content>
             </v-list-item>
-            <v-list-item :to="{name:''}">
+            <v-list-item :to="{ name: '' }">
               <v-list-item-action>
                 <v-icon>table_chart</v-icon>
               </v-list-item-action>
@@ -66,7 +67,7 @@
           </v-list-group>
         </template>
 
-          <template>
+        <template v-if="isAdmin || isVendedor">
           <v-list-group>
             <v-list-item slot="activator">
               <v-list-item-content>
@@ -92,7 +93,7 @@
           </v-list-group>
         </template>
 
-          <template>
+        <template v-if="isAdmin">
           <v-list-group>
             <v-list-item slot="activator">
               <v-list-item-content>
@@ -107,11 +108,10 @@
                 <v-list-item-title> Usuarios </v-list-item-title>
               </v-list-item-content>
             </v-list-item>
-          
           </v-list-group>
         </template>
 
-          <template>
+        <template v-if="isAdmin">
           <v-list-group>
             <v-list-item slot="activator">
               <v-list-item-content>
@@ -152,7 +152,7 @@
       </v-toolbar-title>
 
       <v-spacer></v-spacer>
-      <v-btn icon>
+      <v-btn @click="logout()" icon>
         <v-icon>logout</v-icon>
       </v-btn>
     </v-app-bar>
@@ -186,7 +186,29 @@ export default {
   },
 
   data: () => ({
-    drawer: null,
+    drawer: true,
   }),
+  computed: {
+    islogeado() {
+      return this.$store.state.usuario;
+    },
+    isAdmin() {
+      return this.$store.state.usuario && this.$store.state.usuario.rol=="admin";
+    },
+    isAlmacen() {
+      return this.$store.state.usuario && this.$store.state.usuario.rol=="almacen";
+    },
+    isVendedor() {
+      return this.$store.state.usuario && this.$store.state.usuario.rol=="vendedor";
+    },
+  },
+  created(){
+    this.$store.dispatch("validarLogin");
+  },
+  methods: {
+    logout(){
+     this.$store.dispatch("salir");
+    }
+  },
 };
 </script>

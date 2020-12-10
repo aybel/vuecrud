@@ -7,6 +7,7 @@ import cors from 'cors';
 import path from 'path';
 import mongoose from 'mongoose';
 import rutas from './rutas';
+import bodyParser from 'body-parser';
 //Conexión a la base de datos///////////////////////////////////////
 const DB_URL = 'mongodb://localhost:27017/db_sistema';
 mongoose.Promise=global.Promise;
@@ -23,6 +24,9 @@ const app = express();
 //habilidar para recibir peticiones json
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+//Parsear el body usando body parser
+app.use(bodyParser.json()); // body en formato json
+app.use(bodyParser.urlencoded({ extended: false })); //body formulario
 
 
 app.set('port', process.env.PORT || 3000);
@@ -31,13 +35,13 @@ const ruta_public = path.join(__dirname, 'public');
 app.use(express.static(ruta_public));
 app.use(morgan('dev'));
 app.use(cors());
-//estas  lineas siempre van antes de definir las rutas
 
+
+
+//estas  lineas siempre van antes de definir las rutas
 app.use('/api',rutas);
 
 //termina configuración del servidor//////////////////////////
-
-
 
 
 app.listen(PORT, () => {
