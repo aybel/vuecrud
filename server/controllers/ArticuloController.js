@@ -56,7 +56,8 @@ export default {
     listar: async (req, res, next) => {
         try {
             let valor=req.query.valor;
-            const registros = await models.Articulo.find({$or:[{'nombre':new RegExp(valor,'i')},{'descripcion':new RegExp(valor,'i')}]},{createdAt:0})
+            const registros = await models.Articulo.find(
+                {$or:[{'nombre':new RegExp(valor,'i')},{'descripcion':new RegExp(valor,'i')}]},{createdAt:0})
             .populate('categoria',{nombre:1}) //de la categoria solo regresa el nombre 
             .sort({'createdAt':-1});
             res.status(200).json(registros);

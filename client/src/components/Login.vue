@@ -39,6 +39,7 @@ export default {
     return {
       email: "",
       password: "",
+      errorLogin: null,
     };
   },
   methods: {
@@ -50,13 +51,40 @@ export default {
         })
         .then((response) => {
           return response.data;
-        }).then(data => {
-          this.$store.dispatch("guardarToken",data.tokenGenerado);
-          this.$router.push({name:'Home'});
+        })
+        .then((data) => {
+          this.$store.dispatch("guardarToken", data.tokenGenerado);
+          this.$router.push({ name: "Home" });
         })
         .catch((e) => {
-          console.log(e);
+          this.errorLogin = null;
+          
+          if (e.response.status == 404) {
+            this.errorLogin = e.response.data.message;
+          }else{
+            this.errorLogin = "Error la conectarse al servidor, consulte al administrador";
+          }
+          this.showAlert(1,this.errorLogin);
         });
+    },
+    showAlert(berror, msj) {
+      if (berror == 0) {
+        this.$swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: msj,
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      } else {
+        this.$swal.fire({
+          position: "top-end",
+          icon: "error",
+          title: msj,
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
     },
   },
 };

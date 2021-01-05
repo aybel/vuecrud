@@ -15,6 +15,7 @@
             <v-list-item-title> Inicio </v-list-item-title>
           </v-list-item>
         </template>
+
         <template v-if="isAdmin || isAlmacen">
           <v-list-group>
             <v-list-item slot="activator">
@@ -30,7 +31,7 @@
                 <v-list-item-title> Categorias </v-list-item-title>
               </v-list-item-content>
             </v-list-item>
-            <v-list-item :to="{ name: '' }">
+            <v-list-item :to="{ name: 'articulos' }">
               <v-list-item-action>
                 <v-icon>table_chart</v-icon>
               </v-list-item-action>
@@ -48,15 +49,15 @@
                 <v-list-item-title> Compras </v-list-item-title>
               </v-list-item-content>
             </v-list-item>
-            <v-list-item :to="{ name: '' }">
+            <v-list-item :to="{ name: 'compras' }">
               <v-list-item-action>
                 <v-icon>table_chart</v-icon>
               </v-list-item-action>
               <v-list-item-content>
-                <v-list-item-title> Entradas </v-list-item-title>
+                <v-list-item-title> Compras </v-list-item-title>
               </v-list-item-content>
             </v-list-item>
-            <v-list-item :to="{ name: '' }">
+            <v-list-item :to="{ name: 'proveedores' }">
               <v-list-item-action>
                 <v-icon>table_chart</v-icon>
               </v-list-item-action>
@@ -74,7 +75,7 @@
                 <v-list-item-title> Ventas </v-list-item-title>
               </v-list-item-content>
             </v-list-item>
-            <v-list-item to="{name:''}">
+            <v-list-item :to="{name:''}">
               <v-list-item-action>
                 <v-icon>table_chart</v-icon>
               </v-list-item-action>
@@ -82,7 +83,7 @@
                 <v-list-item-title> Ventas </v-list-item-title>
               </v-list-item-content>
             </v-list-item>
-            <v-list-item to="{name:''}">
+            <v-list-item :to="{name:'clientes'}">
               <v-list-item-action>
                 <v-icon>table_chart</v-icon>
               </v-list-item-action>
@@ -100,7 +101,7 @@
                 <v-list-item-title> Herramientas </v-list-item-title>
               </v-list-item-content>
             </v-list-item>
-            <v-list-item to="{name:''}">
+            <v-list-item :to="{ name: 'usuario' }">
               <v-list-item-action>
                 <v-icon>table_chart</v-icon>
               </v-list-item-action>

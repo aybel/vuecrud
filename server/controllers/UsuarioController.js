@@ -55,7 +55,7 @@ export default {
     actualizar: async (req, res, next) => {
         try {
             let pass = req.body.password;
-            const user = await models.Usuario.findOne({ _id: _req.body._id });
+            const user = await models.Usuario.findOne({ _id: req.body._id });
             if (user.password != pass)
                 req.body.password = await bcrypt.hash(req.body.password, 10);
 
@@ -116,31 +116,31 @@ export default {
             next(error);
         }
     },
-    login: async (req, res, next)=>{
+    login: async (req, res, next) => {
         try {
             //Verificar el usario este registrado
-            let user=await models.Usuario.findOne({email:req.body.email,estado:1});
-            if(user){
+            let user = await models.Usuario.findOne({ email: req.body.email, estado: 1 });
+            if (user) {
                 //Verificamos la contraseña sea la correcta
-                let match=await bcrypt.compare(req.body.password,user.password);
-                if(match){
-                   //Generar un token asociado a ese usuario con jwt
-                    let tokenGenerado=await Token.crearToken(user._id,user.rol,user.email);
-                   res.status(200).json({user,tokenGenerado});
+                let match = await bcrypt.compare(req.body.password, user.password);
+                if (match) {
+                    //Generar un token asociado a ese usuario con jwt
+                    let tokenGenerado = await Token.crearToken(user._id, user.rol, user.email);
+                    res.status(200).json({ user, tokenGenerado });
 
-                }else{
+                } else {
                     res.status(404).send({
-                        message:"Password incorrecto"
+                        message: "Password incorrecto"
                     })
                 }
-            }else{
+            } else {
                 res.status(404).send({
-                    message:"Usuario no existe"
+                    message: "Usuario no existe"
                 })
             }
-            
+
         } catch (error) {
-            
+
         }
     }
 }

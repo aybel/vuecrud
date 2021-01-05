@@ -5,7 +5,7 @@ import auth from '../middlewares/auth';
 const router=routerx();
 
 //agregamos las rutas de categorias
-router.post('/nuevo_usuario',usuarioController.nuevo_usuario);
+router.post('/nuevo_usuario',auth.varficarAdmin,usuarioController.nuevo_usuario);
 router.get('/consultar',auth.varficarAdmin,usuarioController.consultar);
 router.get('/listar',auth.varficarAdmin,usuarioController.listar);
 router.put('/actualizar',auth.varficarAdmin,usuarioController.actualizar);

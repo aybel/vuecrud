@@ -24,7 +24,7 @@ export default {
     },
     varficarAdmin: async (req, res, next) => {
         //Leer el token del headers
-        //console.log(res);
+        //console.log(req.headers);
         if (!req.headers.token) {
             return res.status(404).send({
                 message: "No existe token"

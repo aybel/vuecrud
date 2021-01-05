@@ -28,7 +28,7 @@ export default new Vuex.Store({
       let token = localStorage.getItem('token');
       if (token) {
         commit('setToken', token);
-        commit('setUsuario', jwt(token))
+        commit('setUsuario', jwt(token));
       }
       router.push({ name:'Home' });
     },
